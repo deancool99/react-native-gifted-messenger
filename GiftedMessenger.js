@@ -173,7 +173,7 @@ class GiftedMessenger extends Component {
     }
 
     if (nextProps.maxHeight !== this.props.maxHeight) {
-      this.listViewMaxHeight = nextProps.maxHeight;
+      this.listViewMaxHeight = nextProps.maxHeight - textInputHeight;
       Animated.timing(this.state.height, {
         toValue: this.listViewMaxHeight,
         duration: 150,

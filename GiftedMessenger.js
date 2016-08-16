@@ -7,6 +7,7 @@ import moment from 'moment';
 import { setLocale } from './Locale';
 import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
+import { nativeKeyboardMargin } from './Size';
 
 class GiftedMessenger extends Component {
 
@@ -24,6 +25,7 @@ class GiftedMessenger extends Component {
     this.onKeyboardWillHide = this.onKeyboardWillHide.bind(this);
     this.onKeyboardDidHide = this.onKeyboardDidHide.bind(this);
     this.onChangeText = this.onChangeText.bind(this);
+    this.onContentSizeChange = this.onContentSizeChange.bind(this);
     this.onSend = this.onSend.bind(this);
 
     this._firstDisplay = true;
@@ -200,6 +202,8 @@ class GiftedMessenger extends Component {
     } else {
       this.onChangeText('');
       this.props.handleSend(message);
+      this.setState({ inputHeight: 0 });
+      this.setState({ inputContainerHeight: 0 });
     }
   }
 
@@ -279,10 +283,21 @@ class GiftedMessenger extends Component {
   onChangeText(text) {
     this.setState({
       text,
-      disabled: text.trim().length <= 0
+      disabled: text.trim().length <= 0,
     });
 
     this.props.onChangeText(text);
+  }
+
+  onContentSizeChange(event) {
+    const size = event.nativeEvent.contentSize.height;
+    this.setState({ inputHeight: size });
+    this.setState({ inputContainerHeight: size + 14 });
+    Animated.timing(this.state.height, {
+      toValue: this.listViewMaxHeight + nativeKeyboardMargin() - size,
+      duration: 0.1,
+    }).start();
+    this.scrollToBottom();
   }
 
   getLastMessageUniqueId() {
@@ -540,29 +555,32 @@ class GiftedMessenger extends Component {
   }
 
   setTextInputValue(text) {
-    text = text || this.state.text
+    text = text || this.state.text;
     this.setState({
       text,
       disabled: text.trim().length <= 0,
+      inputHeight: 0,
+      inputContainerHeight: 0,
     });
   }
 
   renderTextInput() {
     if (this.props.hideTextInput === false) {
       return (
-        <View style={this.styles.textInputContainer}>
+        <View style={[this.styles.textInputContainer, { height: Math.max(44, this.state.inputContainerHeight) }]}>
           {this.props.leftControlBar}
           <TextInput
-            style={this.styles.textInput}
+            style={[this.styles.textInput, { height: Math.max(30, this.state.inputHeight) }]}
             placeholder={this.props.placeholder}
             placeholderTextColor={this.props.placeholderTextColor}
             onChangeText={this.onChangeText}
+            multiline={true}
+            onContentSizeChange={this.onContentSizeChange}
             value={this.state.text}
             autoFocus={this.props.autoFocus}
             returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
             onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => {}}
             enablesReturnKeyAutomatically={true}
-
             blurOnSubmit={this.props.blurOnSubmit}
           />
           <Button
@@ -610,6 +628,7 @@ GiftedMessenger.defaultProps = {
   maxHeight: Dimensions.get('window').height,
   messages: [],
   onChangeText: () => {},
+  onContentSizeChange: () => {},
   onErrorButtonPress: () => {},
   onImagePress: null,
   onLoadEarlierMessages: () => {},
@@ -648,6 +667,7 @@ GiftedMessenger.propTypes = {
   maxHeight: React.PropTypes.number,
   messages: React.PropTypes.array,
   onChangeText: React.PropTypes.func,
+  onContentSizeChange: React.PropTypes.func,
   onCustomSend: React.PropTypes.func,
   onErrorButtonPress: React.PropTypes.func,
   onImagePress: React.PropTypes.func,

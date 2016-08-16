@@ -1,11 +1,7 @@
 'use strict';
 
-import React, {
-  Navigator,
-  Component,
-  StatusBar,
-  Platform,
-} from 'react-native';
+import React, {Component} from 'react';
+import {Navigator, StatusBar, Platform} from 'react-native';
 
 import ExNavigator from '@exponent/react-native-navigator';
 

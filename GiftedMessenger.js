@@ -1,19 +1,10 @@
-import React, {
-  Text,
-  View,
-  ListView,
-  TextInput,
-  Dimensions,
-  Animated,
-  Platform,
-  PixelRatio,
-  Component,
-} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View, ListView, TextInput, Dimensions, Animated, Platform, PixelRatio } from 'react-native';
 
 import Message from './Message';
 import GiftedSpinner from 'react-native-gifted-spinner';
 import moment from 'moment';
-import {setLocale} from './Locale';
+import { setLocale } from './Locale';
 import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
 
@@ -129,8 +120,9 @@ class GiftedMessenger extends Component {
 
     Object.assign(this.styles, this.props.styles);
 
-    if (this.props.dateLocale !== '')
+    if (this.props.dateLocale !== '') {
       setLocale(this.props.dateLocale);
+    }
   }
 
   componentDidMount() {
@@ -329,7 +321,7 @@ class GiftedMessenger extends Component {
     const identities = [];
     for (let i = 0; i < messages.length; i++) {
       if (typeof messages[i].uniqueId === 'undefined') {
-        console.warn('messages['+i+'].uniqueId is missing');
+        console.warn('messages[' + i + '].uniqueId is missing');
       }
       rows[messages[i].uniqueId] = Object.assign({}, messages[i]);
       identities.push(messages[i].uniqueId);
@@ -452,7 +444,7 @@ class GiftedMessenger extends Component {
     diffMessage = this.getPreviousMessage(rowData);
 
     if (this.props.renderCustomDate) {
-      return this.props.renderCustomDate(rowData, diffMessage)
+      return this.props.renderCustomDate(rowData, diffMessage);
     }
 
     if (rowData.date instanceof Date) {

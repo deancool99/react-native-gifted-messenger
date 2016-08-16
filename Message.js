@@ -1,4 +1,5 @@
-import React, { View, Text, StyleSheet, TouchableHighlight, Image, Component } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
 import Bubble from './Bubble';
 import ErrorButton from './ErrorButton';
 
@@ -51,7 +52,7 @@ export default class Message extends Component {
     Object.assign(styles, this.props.styles);
   }
 
-  renderName(name, displayNames, diffMessage){
+  renderName(name, displayNames, diffMessage) {
     if (displayNames === true) {
       if (diffMessage === null || name !== diffMessage.name) {
         return (
@@ -80,7 +81,7 @@ export default class Message extends Component {
         if (typeof onImagePress === 'function') {
           return (
             <TouchableHighlight
-              underlayColor='transparent'
+              underlayColor="transparent"
               onPress={() => onImagePress(rowData)}
             >
               <ImageView

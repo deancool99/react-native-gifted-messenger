@@ -1,8 +1,17 @@
 import React, { Component } from 'react';
-import { Text, View, ListView, TextInput, Dimensions, Animated, Platform, PixelRatio } from 'react-native';
+import {
+  Text,
+  View,
+  ListView,
+  TextInput,
+  Dimensions,
+  Animated,
+  Platform,
+  PixelRatio,
+  ActivityIndicator
+} from 'react-native';
 
 import Message from './Message';
-import GiftedSpinner from 'react-native-gifted-spinner';
 import moment from 'moment';
 import { setLocale } from './Locale';
 import deepEqual from 'deep-equal';
@@ -400,7 +409,7 @@ class GiftedMessenger extends Component {
       if (this.props.isLoadingEarlierMessages) {
         return (
           <View style={this.styles.loadEarlierMessages}>
-            <GiftedSpinner />
+            <ActivityIndicator />
           </View>
         );
       }

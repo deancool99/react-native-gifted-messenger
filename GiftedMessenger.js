@@ -16,7 +16,11 @@ import moment from 'moment';
 import { setLocale } from './Locale';
 import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
-import { nativeKeyboardMargin } from './Size';
+import {
+  nativeKeyboardMargin,
+  nativeKeyboardShowMargin,
+  nativeKeyboardHideMargin
+} from './Size';
 
 class GiftedMessenger extends Component {
 
@@ -211,14 +215,13 @@ class GiftedMessenger extends Component {
     } else {
       this.onChangeText('');
       this.props.handleSend(message);
-      this.setState({ inputHeight: 0 });
-      this.setState({ inputContainerHeight: 0 });
+      this.setState({ inputHeight: 0, inputContainerHeight: 0 });
     }
   }
 
   onKeyboardWillHide() {
     Animated.timing(this.state.height, {
-      toValue: this.listViewMaxHeight,
+      toValue: this.listViewMaxHeight - this.state.inputContainerHeight + nativeKeyboardHideMargin(),
       duration: 150,
     }).start();
   }
@@ -238,7 +241,7 @@ class GiftedMessenger extends Component {
 
   onKeyboardWillShow(e) {
     Animated.timing(this.state.height, {
-      toValue: this.listViewMaxHeight - e.endCoordinates.height,
+      toValue: this.listViewMaxHeight - e.endCoordinates.height - this.state.inputContainerHeight + nativeKeyboardShowMargin(),
       duration: 200,
     }).start();
   }
@@ -300,10 +303,9 @@ class GiftedMessenger extends Component {
 
   onContentSizeChange(event) {
     const size = event.nativeEvent.contentSize.height;
-    this.setState({ inputHeight: size });
-    this.setState({ inputContainerHeight: size + 14 });
+    this.setState({ inputHeight: size, inputContainerHeight: size + 14 });
     Animated.timing(this.state.height, {
-      toValue: this.listViewMaxHeight + nativeKeyboardMargin() - size,
+      toValue: this.listViewMaxHeight - nativeKeyboardMargin() - size,
       duration: 0.1,
     }).start();
     this.scrollToBottom();

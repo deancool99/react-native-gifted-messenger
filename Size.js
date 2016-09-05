@@ -16,30 +16,20 @@ export function isIphone6plus() {
 
 export function nativeKeyboardMargin() {
   if (isIphone4s() || isIphone5()) {
-    return 224;
+    return 290;
   } else if (isIphone6plus()) {
-    return 270;
+    return 310;
   } else { // iPhone6
-    return 235;
+    return 300;
   }
 }
 
 export function nativeKeyboardHideMargin() {
   if (isIphone4s() || isIphone5()) {
-    return 20;
+    return 75;
   } else if (isIphone6plus()) {
-    return 50;
+    return 90;
   } else {
-    return 40;
-  }
-}
-
-export function nativeKeyboardShowMargin() {
-  if (isIphone4s() || isIphone5()) {
-    return 40;
-  } else if (isIphone6plus()) {
-    return 0;
-  } else {
-    return 40;
+    return 85;
   }
 }

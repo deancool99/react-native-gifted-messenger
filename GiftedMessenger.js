@@ -221,7 +221,7 @@ class GiftedMessenger extends Component {
 
   onKeyboardWillHide() {
     Animated.timing(this.state.height, {
-      toValue: this.listViewMaxHeight - this.state.inputContainerHeight + nativeKeyboardHideMargin(),
+      toValue: this.listViewMaxHeight - this.state.inputContainerHeight - nativeKeyboardHideMargin(),
       duration: 150,
     }).start();
   }
@@ -241,7 +241,7 @@ class GiftedMessenger extends Component {
 
   onKeyboardWillShow(e) {
     Animated.timing(this.state.height, {
-      toValue: this.listViewMaxHeight - e.endCoordinates.height - this.state.inputContainerHeight + nativeKeyboardShowMargin(),
+      toValue: this.listViewMaxHeight - e.endCoordinates.height - this.state.inputContainerHeight - 30,
       duration: 200,
     }).start();
   }
